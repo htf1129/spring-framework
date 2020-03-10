@@ -959,8 +959,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			// my-note 检查该工厂的bean创建阶段是否已经开始，即是否有任何bean被标记为同时创建。，如果开启了则需要对 beanDefinitionMap 加锁
 			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
+				// my-? beanDefinitionMap为ConcurrentHashMap，此处加锁是为了beanDefinitionNames的线程安全吗？
 				synchronized (this.beanDefinitionMap) {
 					this.beanDefinitionMap.put(beanName, beanDefinition);
+					// my-? beanDefinitionNames为什么不直接add？
 					List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
 					updatedDefinitions.addAll(this.beanDefinitionNames);
 					updatedDefinitions.add(beanName);
