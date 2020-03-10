@@ -205,6 +205,8 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	 * Determine the raw name, resolving aliases to canonical names.
 	 * @param name the user-specified name
 	 * @return the transformed name
+	 *
+	 * my-note 找到真正的beanName，因为传的name可能是别名
 	 */
 	public String canonicalName(String name) {
 		String canonicalName = name;

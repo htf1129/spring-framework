@@ -121,6 +121,9 @@ public interface BeanFactory {
 	 * {@code myJndiObject} is a FactoryBean, getting {@code &myJndiObject}
 	 * will return the factory, not the instance returned by the factory.
 	 */
+	/**
+	 * my-note 用来区分{@link FactoryBean}本身的实例和{@link FactoryBean}创造出来的bean实例.
+	 */
 	String FACTORY_BEAN_PREFIX = "&";
 
 
