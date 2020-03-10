@@ -926,6 +926,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 		BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
 		if (existingDefinition != null) {
+			// my-note 随着依赖的增加或者一些配置的不规范，依赖中出现名字相同的bean，要么抛异常，要么覆盖
 			if (!isAllowBeanDefinitionOverriding()) {
 				throw new BeanDefinitionOverrideException(beanName, beanDefinition, existingDefinition);
 			}
@@ -951,9 +952,11 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 							"] with [" + beanDefinition + "]");
 				}
 			}
+			// my-note 允许覆盖，直接覆盖原有的 BeanDefinition 到 beanDefinitionMap 中
 			this.beanDefinitionMap.put(beanName, beanDefinition);
 		}
 		else {
+			// my-note 检查该工厂的bean创建阶段是否已经开始，即是否有任何bean被标记为同时创建。，如果开启了则需要对 beanDefinitionMap 加锁
 			if (hasBeanCreationStarted()) {
 				// Cannot modify startup-time collection elements anymore (for stable iteration)
 				synchronized (this.beanDefinitionMap) {
