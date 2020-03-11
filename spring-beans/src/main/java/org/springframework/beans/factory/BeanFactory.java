@@ -123,6 +123,8 @@ public interface BeanFactory {
 	 */
 	/**
 	 * my-note 用来区分{@link FactoryBean}本身的实例和{@link FactoryBean}创造出来的bean实例.
+	 *
+	 * my-note 若一个bean————"beanName" 通过{@link FactoryBean}来创建，那么当我们通过 getBean("beanName")来获取的时候会返回 {@link FactoryBean#getObject()}返回的bean，如果getBean("&beanName")那么会获得其FactoryBean对象
 	 */
 	String FACTORY_BEAN_PREFIX = "&";
 
