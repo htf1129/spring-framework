@@ -156,6 +156,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private Boolean lazyInit;
 
+	// 默认不自动装配
 	private int autowireMode = AUTOWIRE_NO;
 
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
@@ -163,6 +164,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private String[] dependsOn;
 
+	// 设置为false，这样容器在查找自动装配对象时，将不考虑该bean，但是并不影响本身注入其它的Bean
 	private boolean autowireCandidate = true;
 
 	private boolean primary = false;

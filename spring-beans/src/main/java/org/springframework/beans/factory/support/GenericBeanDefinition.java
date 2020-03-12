@@ -37,6 +37,7 @@ import org.springframework.util.ObjectUtils;
  * @see RootBeanDefinition
  * @see ChildBeanDefinition
  */
+// my-note 标准bean definition，通用的    若是xml配置，最初被加载进来都是一个GenericBeanDefinition，之后再逐渐解析的
 @SuppressWarnings("serial")
 public class GenericBeanDefinition extends AbstractBeanDefinition {
 

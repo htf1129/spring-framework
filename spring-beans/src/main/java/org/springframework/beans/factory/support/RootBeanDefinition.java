@@ -51,12 +51,15 @@ import org.springframework.util.Assert;
  * @see GenericBeanDefinition
  * @see ChildBeanDefinition
  */
+// my-note 在 配置文件中可以定义父和子，父用RootBeanDefinition表示， 而子用ChildBeanDefiniton表示，而没有父的就使用 RootBeanDefinition表示
+	// RootBeanDefinition与AbstractBeanDefinition是互补关系，RootBeanDefinition在AbstractBeanDefinition的基础上定义了更多属性，初始化Bean需要的信息基本完善
 @SuppressWarnings("serial")
 public class RootBeanDefinition extends AbstractBeanDefinition {
 
 	@Nullable
 	private BeanDefinitionHolder decoratedDefinition;
 
+	/** my-note AnnotatedElement 是java反射包的接口，通过它可以查看Bean的注解信息 */
 	@Nullable
 	private AnnotatedElement qualifiedElement;
 
