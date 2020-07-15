@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2019 the original author or authors.
+ * Copyright 2002-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,10 +70,15 @@ import org.springframework.util.StringUtils;
  */
 public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements SingletonBeanRegistry {
 
-	/** Cache of singleton objects: bean name to bean instance. my-note 单例bean集合,用于存放完全初始化好的 bean，从该缓存中取出的 bean 可以直接使用 */
+	/** Maximum number of suppressed exceptions to preserve. */
+	private static final int SUPPRESSED_EXCEPTIONS_LIMIT = 100;
+
+	/** Cache of singleton objects: bean name to bean instance. */
+	// my-note 单例bean集合,用于存放完全初始化好的 bean，从该缓存中取出的 bean 可以直接使用
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
-	/** Cache of singleton factories: bean name to ObjectFactory. my-note 存放 bean 工厂对象，用于解决循环依赖 */
+	/** Cache of singleton factories: bean name to ObjectFactory. */
+	// my-note 存放 bean 工厂对象，用于解决循环依赖
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name to bean instance. my-note 存放原始的 bean 对象（尚未填充属性），用于解决循环依赖*/
@@ -90,7 +95,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Set<String> inCreationCheckExclusions =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
-	/** List of suppressed Exceptions, available for associating related causes. */
+	/** Collection of suppressed Exceptions, available for associating related causes. */
 	@Nullable
 	private Set<Exception> suppressedExceptions;
 
@@ -253,13 +258,17 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
-	 * Register an Exception that happened to get suppressed during the creation of a
+	 * Register an exception that happened to get suppressed during the creation of a
 	 * singleton bean instance, e.g. a temporary circular reference resolution problem.
+	 * <p>The default implementation preserves any given exception in this registry's
+	 * collection of suppressed exceptions, up to a limit of 100 exceptions, adding
+	 * them as related causes to an eventual top-level {@link BeanCreationException}.
 	 * @param ex the Exception to register
+	 * @see BeanCreationException#getRelatedCauses()
 	 */
 	protected void onSuppressedException(Exception ex) {
 		synchronized (this.singletonObjects) {
-			if (this.suppressedExceptions != null) {
+			if (this.suppressedExceptions != null && this.suppressedExceptions.size() < SUPPRESSED_EXCEPTIONS_LIMIT) {
 				this.suppressedExceptions.add(ex);
 			}
 		}
