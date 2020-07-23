@@ -83,6 +83,17 @@ public abstract class BeanFactoryUtils {
 		if (!name.startsWith(BeanFactory.FACTORY_BEAN_PREFIX)) {
 			return name;
 		}
+		/**
+		 * Map接口的computeIfAbsent方法，简化一下的步骤，可以一步实现
+		 * Object value = map.get("key");
+		 * if (value == null) {
+		 *     value = new Object();
+		 *     map.put("key", value);
+		 * }
+		 *
+		 *
+		 * 处理name,去掉name中开头的所有"&"
+		 */
 		return transformedBeanNameCache.computeIfAbsent(name, beanName -> {
 			do {
 				beanName = beanName.substring(BeanFactory.FACTORY_BEAN_PREFIX.length());
