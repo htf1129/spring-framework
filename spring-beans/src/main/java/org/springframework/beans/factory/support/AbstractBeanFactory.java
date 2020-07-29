@@ -267,7 +267,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
-			// my-note spring无法解决 【Prototype】类型bean 的循环依，因此直接就抛出异常
+			// my-note spring无法解决 【Prototype】类型bean 的循环依，因此直接就抛出异常.
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
